@@ -1,5 +1,5 @@
 {
-  "name": "@fl0wka/Search-bar",
+  "name": "search-bar-ts",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
