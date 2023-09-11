@@ -5,6 +5,7 @@ const CardGit: React.FC<ICardGitProps> = ({ data }) => {
   if (data) {
     return (
       <>
+        <h1>1111</h1>
         {data.map((i) => (
           <div key={i.id} className="m-3 p-2 bg-white drop-shadow-xl">
             <div>
