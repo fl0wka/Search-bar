@@ -9,7 +9,6 @@ const SearchField: React.FC<ISearchFieldProps> = ({
   onSubmit,
   styleButton,
 }) => {
-  // console.log(value);
   return (
     <form
       className="flex justify-center mb-5 content-middle"

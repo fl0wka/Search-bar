@@ -25,6 +25,9 @@ const Main = () => {
   const [searchValue, setSearchValue] = useState<string>('');
   const [activeButton, setActiveButton] = useState<string>('github');
 
+  // const [currentPage, setCurrentPage] = useState<number>(1)
+  // const [perPage, setPerPage] = useState<number>(3)
+
   const handleButton = (event: React.MouseEvent<HTMLButtonElement>) => {
     setActiveButton(event.currentTarget.innerText.toLowerCase());
   };
