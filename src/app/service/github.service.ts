@@ -13,12 +13,7 @@ const githubService = {
   },
   getInfoUser: async (login: string) => {
     const { data } = await apiGithub.get<IGithubLoginResponse>(
-      `users/${login}`,
-      {
-        headers: {
-          Authorization: 'Bearer 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',
-        },
-      }
+      `users/${login}`
     );
     return data;
   },
