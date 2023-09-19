@@ -18,6 +18,11 @@ export interface IWrapperProps {
   children: React.ReactNode;
 }
 
+export interface IPaginationProps {
+  perPage: number;
+  totalItems: number;
+}
+
 export interface ICardYoutubeProps {
   data: IYoutubeItemResponse[];
 }

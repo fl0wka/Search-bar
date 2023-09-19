@@ -20,13 +20,18 @@ import {
   getYoutubeTotalCountResults,
   youtubeSearch,
 } from '../../store/youtubeSearch';
+import { paginate } from '../../utils';
+import {
+  IGithubLoginResponse,
+  IYoutubeItemResponse,
+} from '../../../types/types';
+import Pagination from './pagination';
 
 const Main = () => {
   const [searchValue, setSearchValue] = useState<string>('');
   const [activeButton, setActiveButton] = useState<string>('github');
-
-  // const [currentPage, setCurrentPage] = useState<number>(1)
-  // const [perPage, setPerPage] = useState<number>(3)
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [perPage] = useState<number>(3);
 
   const handleButton = (event: React.MouseEvent<HTMLButtonElement>) => {
     setActiveButton(event.currentTarget.innerText.toLowerCase());
@@ -68,6 +73,18 @@ const Main = () => {
     getData(searchValue);
     clearSearchInput();
   };
+
+  const githubPaginate = paginate<IGithubLoginResponse>(
+    currentPage,
+    perPage,
+    githubData
+  );
+
+  const youtubePaginate = paginate<IYoutubeItemResponse>(
+    currentPage,
+    perPage,
+    youtubeData
+  );
 
   return (
     <>
@@ -129,14 +146,19 @@ const Main = () => {
           'Ничего не найдено'}
 
         {activeButton === 'github' &&
-          githubData.length > 0 &&
-          !githubLoadingStatus &&
-          !githubSearchErr && <CardGit data={githubData} />}
+          // githubData.length > 0 &&
+          !githubSearchErr && <CardGit data={githubPaginate} />}
         {activeButton === 'youtube' &&
-          youtubeData.length > 0 &&
-          !youtubeLoadingStatus &&
-          !youtubeSearchErr && <CardYoutube data={youtubeData} />}
+          // youtubeData.length > 0 &&
+          !youtubeSearchErr && <CardYoutube data={youtubePaginate} />}
       </div>
+
+      <Pagination
+        perPage={perPage}
+        totalItems={
+          activeButton === 'github' ? githubData.length : youtubeData.length
+        }
+      />
     </>
   );
 };
