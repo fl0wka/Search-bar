@@ -30,8 +30,10 @@ import Pagination from './pagination';
 const Main = () => {
   const [searchValue, setSearchValue] = useState<string>('');
   const [activeButton, setActiveButton] = useState<string>('github');
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [perPage] = useState<number>(3);
+  const [githubCurrentPage, setGithubCurrentPage] = useState<number>(1);
+  const [githubPerPage] = useState<number>(3);
+  const [youtubeCurrentPage, setYoutubeCurrentPage] = useState<number>(1);
+  const [youtubePerPage] = useState<number>(3);
 
   const handleButton = (event: React.MouseEvent<HTMLButtonElement>) => {
     setActiveButton(event.currentTarget.innerText.toLowerCase());
@@ -41,8 +43,21 @@ const Main = () => {
     setSearchValue(event.target.value);
   };
 
+  const handleClick = (pageNumber: number): void => {
+    if (activeButton === 'github') {
+      setGithubCurrentPage(pageNumber);
+    } else {
+      setYoutubeCurrentPage(pageNumber);
+    }
+  };
+
   const clearSearchInput = (): void => {
     setSearchValue('');
+  };
+
+  const pageReset = () => {
+    setGithubCurrentPage(1);
+    setYoutubeCurrentPage(1);
   };
 
   const dispatch = useAppDispatch();
@@ -59,8 +74,11 @@ const Main = () => {
     getYoutubeTotalCountResults()
   );
 
+  const isGithubButton = activeButton === 'github';
+  const isYoutubeButton = activeButton === 'youtube';
+
   async function getData(searchValue: string) {
-    if (activeButton === 'github') {
+    if (isGithubButton) {
       dispatch(githubSearch(searchValue));
     } else {
       dispatch(youtubeSearch(searchValue));
@@ -72,17 +90,18 @@ const Main = () => {
     if (searchValue === '') return null;
     getData(searchValue);
     clearSearchInput();
+    pageReset();
   };
 
   const githubPaginate = paginate<IGithubLoginResponse>(
-    currentPage,
-    perPage,
+    githubCurrentPage,
+    githubPerPage,
     githubData
   );
 
   const youtubePaginate = paginate<IYoutubeItemResponse>(
-    currentPage,
-    perPage,
+    youtubeCurrentPage,
+    youtubePerPage,
     youtubeData
   );
 
@@ -110,54 +129,54 @@ const Main = () => {
         onChange={handleChange}
         onSubmit={handleSubmit}
         placeholder={
-          activeButton === 'github'
+          isGithubButton
             ? 'Искать на GitHub (по логину)'
             : 'Искать на YouTube (по названию видео)'
         }
         styleButton={
-          activeButton === 'github'
+          isGithubButton
             ? 'bg-black hover:bg-slate-500'
             : 'bg-red-600 hover:bg-red-400'
         }
       />
 
       <div className="flex flex-wrap justify-center">
-        {((githubLoadingStatus && activeButton === 'github') ||
-          (youtubeLoadingStatus && activeButton === 'youtube')) && <Loader />}
+        {((githubLoadingStatus && isGithubButton) ||
+          (youtubeLoadingStatus && isYoutubeButton)) && <Loader />}
 
-        {((activeButton === 'github' &&
+        {((isGithubButton &&
           !githubTotalCountResults &&
           !githubLoadingStatus &&
           !githubSearchErr) ||
-          (activeButton === 'youtube' &&
+          (isYoutubeButton &&
             !youtubeTotalCountResults &&
             !youtubeLoadingStatus &&
             !youtubeSearchErr)) &&
           'Начните Ваш поиск'}
 
-        {((activeButton === 'github' &&
+        {((isGithubButton &&
           !githubTotalCountResults &&
           !githubLoadingStatus &&
           githubSearchErr) ||
-          (activeButton === 'youtube' &&
+          (isYoutubeButton &&
             !youtubeTotalCountResults &&
             !youtubeLoadingStatus &&
             youtubeSearchErr)) &&
           'Ничего не найдено'}
 
-        {activeButton === 'github' &&
-          // githubData.length > 0 &&
-          !githubSearchErr && <CardGit data={githubPaginate} />}
-        {activeButton === 'youtube' &&
-          // youtubeData.length > 0 &&
-          !youtubeSearchErr && <CardYoutube data={youtubePaginate} />}
+        {isGithubButton && !githubSearchErr && (
+          <CardGit data={githubPaginate} />
+        )}
+        {isYoutubeButton && !youtubeSearchErr && (
+          <CardYoutube data={youtubePaginate} />
+        )}
       </div>
 
       <Pagination
-        perPage={perPage}
-        totalItems={
-          activeButton === 'github' ? githubData.length : youtubeData.length
-        }
+        onClick={handleClick}
+        currentPage={isGithubButton ? githubCurrentPage : youtubeCurrentPage}
+        perPage={isGithubButton ? githubPerPage : youtubePerPage}
+        totalItems={isGithubButton ? githubData.length : youtubeData.length}
       />
     </>
   );

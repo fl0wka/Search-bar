@@ -19,8 +19,10 @@ export interface IWrapperProps {
 }
 
 export interface IPaginationProps {
+  currentPage: number;
   perPage: number;
   totalItems: number;
+  onClick: (pageNumber: number) => void;
 }
 
 export interface ICardYoutubeProps {

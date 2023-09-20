@@ -1,6 +1,12 @@
 import { IPaginationProps } from '../../../types/types';
 
-const Pagination: React.FC<IPaginationProps> = ({ perPage, totalItems }) => {
+const Pagination: React.FC<IPaginationProps> = ({
+  currentPage,
+  perPage,
+  totalItems,
+  onClick,
+}) => {
+  const activeButtonStyle = 'border-2';
   const pageNumbers = [];
 
   for (let i = 1; i <= Math.ceil(totalItems / perPage); i++) {
@@ -10,15 +16,20 @@ const Pagination: React.FC<IPaginationProps> = ({ perPage, totalItems }) => {
   if (pageNumbers.length < perPage) return null;
 
   return (
-    <>
-      <ul>
-        {pageNumbers.map((item) => (
-          <li key={item} className="inline-block px-2 mt-10">
-            <a href="#">{item}</a>
-          </li>
-        ))}
-      </ul>
-    </>
+    <ul>
+      {pageNumbers.map((item) => (
+        <li
+          key={item}
+          className={`inline-block px-2 mt-10 ${
+            currentPage === item ? activeButtonStyle : ''
+          }`}
+        >
+          <a href="#" onClick={() => onClick(item)}>
+            {item}
+          </a>
+        </li>
+      ))}
+    </ul>
   );
 };
 
