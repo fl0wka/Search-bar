@@ -35,31 +35,8 @@ const Main = () => {
   const [youtubeCurrentPage, setYoutubeCurrentPage] = useState<number>(1);
   const [youtubePerPage] = useState<number>(3);
 
-  const handleButton = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setActiveButton(event.currentTarget.innerText.toLowerCase());
-  };
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    setSearchValue(event.target.value);
-  };
-
-  const handleClick = (pageNumber: number): void => {
-    if (activeButton === 'github') {
-      setGithubCurrentPage(pageNumber);
-    } else {
-      setYoutubeCurrentPage(pageNumber);
-    }
-  };
-
-  const clearSearchInput = (): void => {
-    setSearchValue('');
-  };
-
-  const pageReset = () => {
-    setGithubCurrentPage(1);
-    setYoutubeCurrentPage(1);
-  };
-
+  const isGithubButton = activeButton === 'github';
+  const isYoutubeButton = activeButton === 'youtube';
   const dispatch = useAppDispatch();
 
   const githubData = useAppSelector(getGithubData());
@@ -74,8 +51,42 @@ const Main = () => {
     getYoutubeTotalCountResults()
   );
 
-  const isGithubButton = activeButton === 'github';
-  const isYoutubeButton = activeButton === 'youtube';
+  const githubPaginate = paginate<IGithubLoginResponse>(
+    githubCurrentPage,
+    githubPerPage,
+    githubData
+  );
+
+  const youtubePaginate = paginate<IYoutubeItemResponse>(
+    youtubeCurrentPage,
+    youtubePerPage,
+    youtubeData
+  );
+
+  const handleButton = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setActiveButton(event.currentTarget.innerText.toLowerCase());
+  };
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    setSearchValue(event.target.value);
+  };
+
+  const handleClick = (pageNumber: number): void => {
+    if (isGithubButton) {
+      setGithubCurrentPage(pageNumber);
+    } else {
+      setYoutubeCurrentPage(pageNumber);
+    }
+  };
+
+  const clearSearchInput = (): void => {
+    setSearchValue('');
+  };
+
+  const pageReset = () => {
+    setGithubCurrentPage(1);
+    setYoutubeCurrentPage(1);
+  };
 
   async function getData(searchValue: string) {
     if (isGithubButton) {
@@ -92,18 +103,6 @@ const Main = () => {
     clearSearchInput();
     pageReset();
   };
-
-  const githubPaginate = paginate<IGithubLoginResponse>(
-    githubCurrentPage,
-    githubPerPage,
-    githubData
-  );
-
-  const youtubePaginate = paginate<IYoutubeItemResponse>(
-    youtubeCurrentPage,
-    youtubePerPage,
-    youtubeData
-  );
 
   return (
     <>
@@ -173,7 +172,7 @@ const Main = () => {
       </div>
 
       <Pagination
-        onClick={handleClick}
+        paginate={handleClick}
         currentPage={isGithubButton ? githubCurrentPage : youtubeCurrentPage}
         perPage={isGithubButton ? githubPerPage : youtubePerPage}
         totalItems={isGithubButton ? githubData.length : youtubeData.length}

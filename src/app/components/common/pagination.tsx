@@ -4,7 +4,7 @@ const Pagination: React.FC<IPaginationProps> = ({
   currentPage,
   perPage,
   totalItems,
-  onClick,
+  paginate,
 }) => {
   const activeButtonStyle = 'border-2';
   const pageNumbers = [];
@@ -24,7 +24,7 @@ const Pagination: React.FC<IPaginationProps> = ({
             currentPage === item ? activeButtonStyle : ''
           }`}
         >
-          <a href="#" onClick={() => onClick(item)}>
+          <a href="#" onClick={() => paginate(item)}>
             {item}
           </a>
         </li>

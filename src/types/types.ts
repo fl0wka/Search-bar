@@ -22,7 +22,7 @@ export interface IPaginationProps {
   currentPage: number;
   perPage: number;
   totalItems: number;
-  onClick: (pageNumber: number) => void;
+  paginate: (pageNumber: number) => void;
 }
 
 export interface ICardYoutubeProps {
