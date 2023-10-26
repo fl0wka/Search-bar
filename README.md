@@ -6,4 +6,4 @@
 
 ### TypeScript, React, Redux, Redux-Persist, Axios, Tailwind
 
-### github-page: https://fl0wka.github.io/search-bar/
+### github-pages: https://fl0wka.github.io/search-bar/
