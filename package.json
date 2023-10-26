@@ -1,7 +1,7 @@
 {
   "name": "search-bar-ts",
   "version": "0.1.0",
-  "homepage": "https://fl0wka.github.io/search-bar"
+  "homepage": "https://fl0wka.github.io/search-bar",
   "private": true,
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.5",
