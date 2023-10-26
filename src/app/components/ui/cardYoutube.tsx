@@ -9,7 +9,7 @@ const CardYoutube: React.FC<ICardYoutubeProps> = ({ data }) => {
           <iframe
             width="100%"
             height="315"
-            src={`http://www.youtube.com/embed/${item.id.videoId}`}
+            src={`https://www.youtube.com/embed/${item.id.videoId}`}
             // frameBorder="0"
             allowFullScreen
             title={item.snippet.title}
